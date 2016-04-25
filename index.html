@@ -1,0 +1,38 @@
+<head>
+	<meta charset="utf-8"/>
+	<title>Udacity</title>
+	<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+
+	<nav>
+
+		<ul id="side-menu">
+			
+		</ul>
+
+	</nav>
+
+	<main id="main-content">
+		<div id="cat-container">
+			<h2 id="cat-title"></h2>
+			<div id="cat-clicks"></div>
+		</div>
+
+		<button id="admin-mode-btn">Admin</button>
+
+		<div id="cat-edit-form">
+			<h2 id="cat-edit-form-title">Egit Cat</h2>
+			<form name="cat-edit" id="cat-edit">
+				<input type="text" name="name" class="cat-name-input" required placeholder="Name"/>
+				<input type="url" name="img" class="cat-img-url-input" required placeholder="Img url"/>
+				<input type="number" name="clicks" class="cat-clicks-number-input" disabled/>
+				<input class="form-btn" type="submit" value="Save"/>
+				<input id="cat-edit-cancel-btn" class="form-btn cancel-btn" type="reset" value="Cancel"/>
+			</form>
+		</div>
+	</main>
+
+	<script type="text/javascript" src="index.js"></script>
+</body>
