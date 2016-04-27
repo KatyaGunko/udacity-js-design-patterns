@@ -73,8 +73,9 @@
 			cats: [],
 			currentCat: 0,
 			Cat: Cat,
-			Counter: Counter,
-			setCurrentCat: setCurrentCat
+			setCurrentCat: setCurrentCat,
+			getCurrentCatIndex: getCurrentCatIndex,
+			Counter: Counter
 		}
 
 		function Cat(options, index) {
@@ -95,6 +96,10 @@
 
 		function setCurrentCat(index) {
 			instance.currentCat = index;
+		}
+
+		function getCurrentCatIndex() {
+			return instance.currentCat
 		}
 
 		function Counter(){
@@ -118,7 +123,7 @@
 			getCat: getCat,
 			catOnclick: catOnclick,
 			showCat: showCat,
-			getCurrentCatIndex: getCurrentCatIndex,
+			getCurrentCat: getCurrentCat,
 			updateCat: updateCat
 		}
 
@@ -128,10 +133,19 @@
 			}
 
 			catsView.init();
+			catEditView.init();
 		}
 
 		function getCat(index) {
 			return catsModel.cats[index];
+		}
+
+		function getCurrentCat() {
+			return catsModel.cats[catsModel.currentCat];
+		}
+
+		function setCurrentCat(index) {
+			catsModel.setCurrentCat(index);
 		}
 
 		function catOnclick(index) {
@@ -144,21 +158,20 @@
 			catsView.render(catsModel.cats[index]);
 		}
 
-		function setCurrentCat(index) {
-			catsModel.setCurrentCat(index);
-		}
-
-		function getCurrentCatIndex() {
-			return catsModel.currentCat;
-		}
-
 		function updateCat(index, updatedCat) {
-			var cat = catsModel.cats[index];
+			var cat;
 
+			if ( index === -1 ) {
+				cat = getCurrentCat();
+			} else {
+				cat = getCat(index);
+			}
+			
 			cat.updateCat(updatedCat);
 			catsView.render(catsModel.cats[catsModel.currentCat]);
 		}
 		return controller;
+
 	})();
 
 	var catsView = (function(){
@@ -174,7 +187,7 @@
 		var clicks = document.getElementById('cat-clicks');
 
 		function init() {
-			var cat = catsController.getCat(catsController.getCurrentCatIndex());
+			var cat = catsController.getCurrentCat();
 			render(cat);
 		}
 
@@ -213,12 +226,12 @@
 		
 		function init() {
 			adminBtn.onclick = showCatEditWindow;
-			catEditForm.onsubmit = setCurrentCat;
+			catEditForm.onsubmit = updateCatFormSubmitted;
 			catEditCancelBtn.onclick = hideCatEditWindow;
 		}
 
 		function showCatEditWindow() {
-			var currentCat = catsController.getCat(catsController.getCurrentCatIndex());
+			var currentCat = catsController.getCurrentCat();
 
 			render(currentCat);
 		}
@@ -240,7 +253,7 @@
 			catEditContainer.style.display = 'block';
 		}
 
-		function setCurrentCat(e) {
+		function updateCatFormSubmitted(e) {
 			e.preventDefault();
 
 			var updatedCat = {
@@ -248,7 +261,7 @@
 				img: catImgInput.value || '' 
 			}
 
-			catsController.updateCat(catsController.getCurrentCatIndex(), updatedCat);
+			catsController.updateCat(-1, updatedCat);
 
 			hideCatEditWindow();
 		}
@@ -285,6 +298,5 @@
 
 	menuController.init(catsInfo);
 	catsController.init(catsInfo);
-	catEditView.init();
 
 })();
